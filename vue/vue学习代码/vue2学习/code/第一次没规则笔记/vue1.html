@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第一天</title>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script> -->
+    <!--<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>-->
+    <script type="text/javascript" src="../../js/vue.js"></script>
+</head>
+
+<body>
+    <!-- 1.想让Vue工作，就必须创建一个Vue实例，且要传入一个配置对象；
+    2.root容器里的代码依然符合html规范，只不过混入了一些特殊的Vue语法；
+    3.root容器里的代码被称为【Vue模板】；
+    4.Vue实例和容器是一一对应的；
+    5.真实开发中只有一个Vue实例，并且会配合着组件一起使用；
+    6.{{xxx}}中的xxx要写js表达式，且xxx可以自动读取到data中的所有属性；
+    7.一旦data中的数据发生改变，那么页面中用到该数据的地方也会自动更新；
+    注意区分：js表达式和js代码（语句）
+        1.表达式：一个表达式会产生一个值，可以放在任何一个需要值的地方： -->
+
+    
+    <!--准备好一个容器-->
+    <div id="root">
+        {{name}}
+        <!-- 标签体内容用插值 {{}} -->
+        <h1>hello,{{name}}</h1>
+        <!-- 标签内属性用 :  相当于vue 去执行js 结果表达式 -->
+        <a v-bind:href="url">百度一下</a><br>
+        单项数据绑定:<input type="text" v-bind:value="in1"><br>
+        <!-- 表单类值可以输入的标签可以支持双向表单 input select -->
+        <!-- v-model收集value的值 v-model:value可以简写为v-model -->
+        双向数据绑定:<input type="text" v-model="in2">
+    </div>
+    <script type="text/javascript">
+        Vue.config.productionTip = false //关闭生产提示
+        //床架vue实例
+        const vm = new Vue({
+            // el:'#root',//直接指定
+            // data:{//对象式设置值
+            //     name:'cloud',
+            //     url:'https://www.baidu.com',//网址要加 https://不然 会访问本地目录
+            //     in1:'值',
+            //     in2:'值2',
+            // }
+
+            // data: function () {//这个地方对象内函数可以省略: function
+            data() {
+                //函数内的this 时Vue对象 如果前面的函数用的是匿名式函数 ()=> this就是整个容器 windows 
+                console.log(this)
+                return {
+                    name: 'cloud',
+                    url: 'https://www.baidu.com',//网址要加 https://不然 会访问本地目录
+                    in1: '值',
+                    in2: '值2',
+                }
+            }
+        })
+        setTimeout(() => {
+            x.$mount('#root')//把vue 挂载到 root的标签
+        }, 1000)
+    </script>
+</body>
+
+</html>

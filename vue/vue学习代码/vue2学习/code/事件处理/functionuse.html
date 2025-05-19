@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue函数使用</title>
+    <script type="text/javascript" src="../../js/vue.js"></script>
+</head>
+
+<body>
+
+    <div id="root">
+        <h1>{{hello}}</h1>
+        <!-- v-bind:value 简写是:value-->
+        <!-- v-model:value 简写是:model-->
+        <!-- v-on:click 简写是@click -->
+        <button v-on:click="show($event,hello)">点我提示</button>
+    </div>
+
+    <script type="text/javascript">
+        const vm = new Vue({
+            data() {
+                return {
+                    hello: '你好'
+                }
+            },
+            methods: {
+                show(event, value) {
+                    console.log(value)
+                    console.log(event)
+                    console.log(event.target)
+                    console.log(event.target.innerText)
+                    alert('你点我了')
+                }
+            }
+        }).$mount('#root')
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>天气监视属性深度</title>
+
+    <span>深度监视:<br />
+        (1).Vue中的watch默认不监测对象内部值的改变(一层)<br />
+        (2).配置deep:true可以监测对象内部值改变(多层)。<br />备注:<br />
+        (1).Vue自身可以监测对象内部值的改变，<br />但Vue提供的watch默认不可以!
+        (2).使用watch时根据数据的具体结构，<br />决定是否采用深度监视。</span>
+    <script type="text/javascript" src="../../js/vue.js"></script>
+</head>
+
+<body>
+
+    <div id="root">
+        <h2>今天天气很{{info}}</h2>
+        <button @click="change">切换</button>
+        <hr />
+        <h3>a值:{{number.a}}</h3>
+        <button @click="number.a++">点我加a+1</button>
+        <h3>b值:{{number.b}}</h3>
+        <button @click="number.b++">点我加b+1</button>
+    </div>
+
+    <script type="text/javascript">
+        const vm = new Vue({
+            data() {
+                return {
+                    hot: true,
+                    number: {
+                        a: 1,
+                        b: 2
+                    }
+                }
+
+            },
+            computed: {
+                info() {
+                    return this.hot == true ? '严热' : '凉爽'
+                }
+            },
+            methods: {
+                change() {
+                    this.hot = !this.hot
+                }
+            },
+            // watch: {
+            //     info: {
+            //         immediate: true,//初始化的时候也调用
+            //         handler(newValue, oldValue) {//值改变的时候调用
+            //             console.log('info ', ' newValue:', newValue, ' oldValue:', oldValue)
+            //         }
+            //     },
+            //     number: {
+            //         deep: true,
+            //         handler(newValue, oldValue) {//值改变的时候调用
+            //             for (let key in oldValue) {
+            //                 console.log(key, newValue[key], oldValue[key]);
+            //             }
+            //         }
+            //     }
+            // }
+        }).$mount('#root')
+
+        vm.watch('hot',function(newValue,oldValue){
+            for(let key in oldValue){
+                console.log(key, oldValue[key],newValue[key])
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue条件渲染</title>
+    <script type="text/javascript" src="../../js/vue.js"></script>
+</head>
+
+<body>
+    <br /><br />
+    <div id="root">
+        <div v-if="select=='email'">
+            <label>email:</label>
+            <input type="text" placeholder="please input email">
+        </div>
+        <div v-else>
+            <label>userName:</label>
+            <input type="text" placeholder="please input userName">
+
+        </div>
+        <select @change="changeType">
+            <option value="userName">userName</option>
+            <option value="email">email</option>
+        </select>
+    </div>
+
+    <script type="text/javascript">
+        let vm = new Vue({
+            el: '#root',
+            data: {
+                select: ''
+            },
+            methods: {
+                changeType(event) {
+                    immediate = true
+                    this.select = event.target.value
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

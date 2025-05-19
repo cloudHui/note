@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>天气监视1</title>
+    <script type="text/javascript" src="../../js/vue.js"></script>
+</head>
+
+<body>
+
+    <div id="root">
+        <h2>今天天气很{{info}}</h2>
+        <button @click="change">切换</button>
+        <button @click="hot =!hot">直接切换</button>
+    </div>
+
+    <script type="text/javascript">
+        const vm = new Vue({
+            data() {
+                return {
+                    hot: true
+                }
+
+            },
+            computed: {
+                info() {
+                    return this.hot == true ? '严热' : '凉爽'
+                }
+            },
+            methods: {
+                change(){
+                    this.hot = !this.hot
+                }
+            },
+        }).$mount('#root')
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue列表渲染</title>
+    <script type="text/javascript" src="../../js/vue.js"></script>
+    <style>
+        ul {
+            list-style-type: disc;
+        }
+    </style>
+</head>
+
+<body>
+    <img src="image.png">
+    <div id="root">
+        <div>
+            <ul>
+                <!-- 必须时这个顺序 第一个参数是值 第二个是键 第三个是序列 -->
+                <ol v-for="(value, key, index) in objects">
+                    index:{{index}} <br /> key:{{key}} <br />value：{{value}}
+                </ol>
+            </ul>
+        </div>
+        <div>
+            <div>
+                <label>Add a todo</label>
+                <input v-model="todo" type="text">
+                <button @click="addTodo">add</button>
+                <ul>
+                    <ol v-for="item in array">
+                        {{item}}
+                        <button type="button" @click="deleteTodo(item)">Delete</button>
+                    </ol>
+                </ul>
+            </div>
+            <div>
+
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        let vm = new Vue({
+            el: '#root',
+            data: {
+                todo: '',
+                objects: {
+                    title: 'How to do lists in Vue',
+                    author: 'Jane Doe',
+                    publishedAt: '2016-04-10'
+                },
+                array: [
+                    'copyDate',
+                    'wrriteDc',
+                ]
+            },
+            methods: {
+                addTodo() {
+                    this.array.push(this.todo)
+                    this.todo = ''
+                },
+                deleteTodo(item) {
+                    this.array = this.array.filter(value => item != value)
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

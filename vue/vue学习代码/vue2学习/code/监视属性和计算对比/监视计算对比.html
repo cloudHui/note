@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>姓名监视实现</title>
+    <script type="text/javascript" src="../../js/vue.js"></script>
+</head>
+
+<body>
+
+    <span>computed和lwatch之间的区别：<br/>
+        1.computed能完成的功能，watch都可以完成。<br/>
+        2.watch能完成的功能，computed不一定能完成，例如：watch可以进行异步操作。<br/>
+    两个重要的小原则：<br/>
+        1.所被Vue管理的函数，最好写成普通函数，这样this的指向才是vm或组件实例对象。<br/>
+        2.所有不被Vue所管理的函数（定时器的回调函数、ajax的回调函数等、Promise的回调函数），最好写成箭头函数，<br/>
+        这样this的指向才是vm或组件实例对象。<br/>
+    
+    </span>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <div id="root">
+        姓:<input type="text" v-model="fullName.firstName"><br><br>
+        名:<input type="text" v-model="fullName.lastName"><br><br>
+        全名:<span>{{fullName.firstName+'-'+fullName.lastName}}</span>
+    </div>
+
+    <script type="text/javascript">
+        const vm = new Vue({
+            data() {
+                return {
+                    fullName: {
+                        firstName: '',
+                        lastName: ''
+                    }
+                }
+            },
+            watch: {
+                fullName: {
+                    immediate: true,
+                    handler(newValue,oldValue){
+                    }
+                }
+            }
+        }).$mount('#root')
+    </script>
+</body>
+
+</html>

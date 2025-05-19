@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue样式绑定</title>
+    <span>绑定样式：<br/>
+        1.class样式<br/>
+        写法：class=XXX可以是字符串、对象、数组。<br/>
+        字符串写法适用于：类名不确定，要动态获取。<br/>
+        对象写法适用于：要绑定多个样式，个数不确定，名字也不确定。<br/>
+        数组写法适用于：要绑定多个样式，个数确定，名字也确定，但不确定用不
+        2.style样式<br/>
+        :style="{fontSize:xxx}"其中xxx是动态值。<br/>
+        :style="[a,b]"其中a、b是样式对象。<br/>
+    </span>
+    <style>
+        .basic {
+            width: 400px;
+            height: 100px;
+            border: 1px solid black;
+        }
+
+        .happy {
+            border: 4px solid red;
+            background-color: rgba(255, 255, 0, 0.644);
+            background: linear-gradient(30deg, yellow, pink, orange, yellow);
+        }
+
+        .sad {
+            border: 4px dashed rgb(2, 197, 2);
+            background-color: grey;
+        }
+
+        .normal {
+            background-color: skyblue;
+        }
+
+        .a1 {
+            background-color: yellowgreen;
+        }
+
+        .a2 {
+            font-size: 30px;
+            text-shadow: 2px 2px 10px red;
+        }
+
+        .a3 {
+            border-radius: 20px;
+        }
+    </style>
+    <script type="text/javascript" src="../../js/vue.js"></script>
+</head>
+
+<body>
+    <br /><br />
+    <div id="root">
+        <div class="basic" :class="mod">{{message}}</div>
+        <br /><br />
+        <!-- 绑定class样式--数组写法，适用于:要绑定的样式个数不确定、名字也不确定  -->
+        <div class="basic" :class="arra" @click="changearray">{{arra}}</div>
+        <br /><br />
+        <!-- 绑定class样式--对象写法，适用于:要绑定的样式个数确定、名学也确定，但要动态决定用不用  -->
+        <div class="basic" :class="object" @click="changeobj">{{object}}</div>
+        <br /><br />
+        <div class="basic" :style="styObj" @click="changeobj">{{styObj}}</div>
+    </div>
+
+    <script type="text/javascript">
+        let arra = ['happy', 'sad', 'normal']
+        let vm = new Vue({
+            el: '#root',
+            data: {
+                message: 'Hello Vue',
+                mod: 'normal',
+                arra: ['a1', 'a2', 'a3'],
+                object: {
+                    a1: true,
+                    a2: false
+                },
+                styObj:{
+                    fontSize:'40px',
+                }
+            },
+            methods: {
+                changearray() {
+                    this.mod = arra[Math.floor(Math.random() * 3)]
+                    console.log(this.mod)
+                },
+                changeobj(){
+                    this.object.a1 = false
+                    this.object.a2 = true
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

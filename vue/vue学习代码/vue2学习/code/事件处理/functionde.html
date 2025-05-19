@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue函数修饰符使用</title>
+    <script type="text/javascript" src="../../js/vue.js"></script>
+</head>
+
+<body>
+
+    <div id="root">
+        <h1>{{hello}}</h1>
+        <a href="http://www.baidu.com" @click.prevent="show">百度</a>
+    </div>
+
+    <script type="text/javascript">
+        const vm = new Vue({
+            data() {
+                return {
+                    hello: '你好'
+                }
+            },
+            methods: {
+                show(event, value) {
+                    // event.preventDefault()//等同于 @click.prevent
+                    alert('你点我了')
+                }
+            }
+        }).$mount('#root')
+    </script>
+</body>
+
+</html>

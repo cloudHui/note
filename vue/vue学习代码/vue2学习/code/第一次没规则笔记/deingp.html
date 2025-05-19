@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>defineProperty测试</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+        // const person = {
+        //     name: 'cloud',
+        //     sex: 'boy',
+        // }
+        // Object.defineProperty(person, 'love', {
+        //     value: {
+        //         name: 'sunny',
+        //         sex: 'girl',
+        //         age: 18,
+        //     },
+        //     enumerable: true,//控制属性是否可以枚举，可以通过key一一读取出来 默认值是false
+        //     writable: true,//控制属性是否可以被修改，默认值是false
+        //     configurable: true //控制属性是否可以被删除，默认值是false
+        // })
+        // console.log(Object.keys(person))
+        // console.log(person)
+        let number = 18
+        let person = {
+            name: 'cloud',
+            sex: 'boy',
+        }
+        Object.defineProperty(person, 'love', {
+            get: function () {
+                return number
+            }
+        })
+        console.log(Object.keys(person))
+        console.log(person)
+
+
+
+        let obj = { x: 100 }
+        let obj2 = { y: 200 }
+        Object.defineProperty(obj2, 'x', {
+            get() {
+                return obj.x
+            },
+            set(value) {
+                obj.x = value
+                console.log(obj2)
+            }
+        })
+    </script>
+</body>
+
+</html>

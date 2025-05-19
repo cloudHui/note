@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue计算属性插值属性</title>
+    <script type="text/javascript" src="../../js/vue.js"></script>
+</head>
+
+<body>
+
+    <div id="root">
+        姓:<input type="text" v-model="firstName"><br><br>
+        名:<input type="text" v-model="lastName"><br><br>
+        全名:<span>{{firstName}}-{{lastName}}</span>
+    </div>
+
+    <script type="text/javascript">
+        const vm = new Vue({
+            data() {
+                return {
+                    firstName: '',
+                    lastName: ''
+                }
+
+            },
+            // methods: {
+            //     show(event) {
+            //         console.log(event)
+            //         console.log(event.keyCode)
+            //     }
+            // }
+        }).$mount('#root')
+    </script>
+</body>
+
+</html>
