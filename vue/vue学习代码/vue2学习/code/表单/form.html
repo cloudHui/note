@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表单</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <input v-model="message" type="text" placeholder="edit me">
+        <p>Message is: {{ message }}</p>
+
+
+        <label>姓:</label><input type="text" v-model.trim="firstName"><br><br>
+        <label>名:</label><input type="text" v-model.trim="lastName"><br><br>
+        <label>全名:</label><span>{{firstName}}-{{lastName}}</span><br><br>
+
+
+        <!-- 多行文本用v-model绑定显示值 -->
+        <textarea v-model="tMessage"></textarea>
+        <p>textarea message is: </p>
+        <p>{{ tMessage }}</p><br><br>
+
+        <!-- label 通过for 去绑定input -->
+        <!-- 如果label 文本域是插值属性并且绑定的是 input checkbox，默认值必须是true 才有显示到lable文本域 -->
+        <input type="checkbox" id="single" v-model="singleValue">
+        <label>{{singleValue}}</label><br><br>
+
+        <!-- 多选按钮 -->
+        <!-- 一个数组绑定多个输入框 并双向绑定 -->
+        <input type="checkbox" id="jack" value="jack" v-model="names">
+        <label for="jack">jack</label>
+        <input type="checkbox" id="rose" value="rose" v-model="names">
+        <label for="rose">rose</label>
+        <input type="checkbox" id="daiv" value="daiv" v-model="names">
+        <label for="daiv">daiv</label><br><br>
+        <label>allName:{{names}}</label><br><br>
+
+        <!-- 单选按钮 -->
+        <!-- 当选中时，singleTwo 被赋值  value -->
+        <input type="radio" id="one" value="one" v-model="singleTwo">
+        <label for="one">one</label>
+        <input type="radio" id="two" value="two" v-model="singleTwo">
+        <label for="two">two</label><br><br>
+        <label>singleTwo:{{singleTwo}}</label><br><br>
+
+        <!--  <option disabled value="">请选择</option> 这一行是默认格式必须写 -->
+        <!-- 选择框 多选项 选中哪个 selectAll就被赋值哪个 option的value属性-->
+
+        <!-- multiple 直接设置 可多选下拉框
+        size：定义下拉列表的可见行数，默认值为1（单行下拉），大于1时显示为滚动列表 
+         <select v-model="selectAll" multiple size="2">
+        -->
+        <select v-model="selectAll">
+            <option disabled value="">请选择</option>
+            <option value="apple">apple</option>
+            <option value="banana">banana</option>
+            <option value="pear">pear</option>
+        </select>
+        <label>selectAll:{{selectAll}}</label><br><br>
+    </div>
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                firstName: '',
+                lastName: '',
+                message: '',
+                tMessage: '',
+                singleValue: '',
+                names: [],
+                singleTwo: '',
+                selectAll: '',
+            }
+        })
+    </script>
+</body>
+
+</html>
