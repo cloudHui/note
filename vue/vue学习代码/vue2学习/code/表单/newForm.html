@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新检测测试</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <input type="checkbox" id="checkbox" v-model="checked">
+        <label for="checkbox">{{ checked }}</label>
+    </div>
+    <script type="text/javascript">
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                checked: false
+            }
+        })
+    </script>
+</body>
+
+</html>

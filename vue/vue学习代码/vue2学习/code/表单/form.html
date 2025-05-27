@@ -25,7 +25,8 @@
         <p>{{ tMessage }}</p><br><br>
 
         <!-- label 通过for 去绑定input -->
-        <!-- 如果label 文本域是插值属性并且绑定的是 input checkbox，默认值必须是true 才有显示到lable文本域 -->
+        <!-- 如果label 文本域是插值属性并且绑定的是 input checkbox，
+         默认值必须是true 或 false  没有引号-->
         <input type="checkbox" id="single" v-model="singleValue">
         <label>{{singleValue}}</label><br><br>
 
@@ -70,7 +71,7 @@
                 lastName: '',
                 message: '',
                 tMessage: '',
-                singleValue: '',
+                singleValue: false,
                 names: [],
                 singleTwo: '',
                 selectAll: '',
