@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue key列表过滤</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+
+        <div>
+            <input type="text" placeholder="请输入内容" v-model="keyWord">
+            <ul>
+                <!-- 遍历数组 -->
+                <ol v-for="(value,  index) in fillterArray" :key="value.id">
+                    {{index}}--{{value.name}}----{{value.age}}-----{{value.sex}}
+                </ol>
+            </ul>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        const app = new Vue({
+            el: '#root',
+            data: {
+                keyWord: '',
+                values: [
+                    { id: '001', name: '马冬梅', age: 18, sex: '女' },
+                    { id: '002', name: '周冬雨', age: 20, sex: '女' },
+                    { id: '003', name: '周杰伦', age: 21, sex: '男' },
+                    { id: '004', name: '温兆伦', age: 22, sex: '男' },
+                ],
+            },
+
+            //#region 
+            //属性监视
+            // watch: {
+            //     keyWord: {
+            //         immediate: true,
+            //         handler(val) {
+            //             this.fillter = this.values.filter(p => {
+            //                 return p.name.indexOf(val) !== -1;
+            //             });
+            //         }
+            //     }
+            // },
+            //#endregion
+
+            //属性计算
+            computed: {
+                fillterArray() {
+                    return this.fillterArray = this.values.filter((p) => {
+                        return p.name.indexOf(this.keyWord) !== -1
+                    })
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

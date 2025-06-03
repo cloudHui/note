@@ -18,11 +18,36 @@
     <div id="root">
         <div>
             <ul>
+                <!-- 遍历对象 -->
                 <!-- 必须时这个顺序 第一个参数是值 第二个是键 第三个是序列 -->
                 <ol v-for="(value, key, index) in objects">
                     index:{{index}} <br /> key:{{key}} <br />value：{{value}}
                 </ol>
             </ul>
+        </div>
+        <div>
+            <ul>
+                <!-- 遍历数组 -->
+                <ol v-for="(value,  index) in values" :key="index">
+                    index:{{index}}  <br />value：{{value}}
+                </ol>
+            </ul>
+        </div>
+        <div>
+            <!-- 遍历字符串 -->
+             <ul>
+                <ol v-for="(char, index) in name" :key="index">
+                    char:{{char}}---index:{{index}}
+                </ol>
+             </ul>
+        </div>
+        <div>
+            <!-- 遍历次数 -->
+             <ul>
+                <ol v-for="(num, index) in 5" :key="index">
+                    num:{{num}}---index:{{index}}
+                </ol>
+             </ul>
         </div>
         <div>
             <div>
@@ -55,7 +80,30 @@
                 array: [
                     'copyDate',
                     'wrriteDc',
-                ]
+                ],
+                name:"hello",
+                values: [
+                    {
+                        title: 'How to do lists in Vue',
+                        author: 'Jane Doe',
+                        publishedAt: '2016-04-10'
+                    },
+                    {
+                        title: 'nothinge',
+                        author: 'Jane ',
+                        publishedAt: '2016-05-10'
+                    },
+                    {
+                        title: 'How to do lists in Vue',
+                        author: 'Jane Doe',
+                        publishedAt: '2016-04-10'
+                    },
+                ],
+                objects: {
+                    title: 'How to do lists in Vue3',
+                    author: 'Doe',
+                    publishedAt: '2016-04-20'
+                },
             },
             methods: {
                 addTodo() {
