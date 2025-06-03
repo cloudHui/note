@@ -7,8 +7,8 @@
 《Heartbeats》心跳
 《Hero》英雄
 《IWant lt That Way》我想要那样
-《Ifyou Are Happy》如果你快乐《
-Lucky》幸运
+《Ifyou Are Happy》如果你快乐
+《Lucky》幸运
 《Mary has alittlelamb》玛丽有只羊
 《Memories》四忆
 《Monsters》怪物
@@ -33,7 +33,8 @@ Lucky》幸运
 《Believer》信仰者
 《Better Man》更好的人
 《Brave》勇敢
-Counton me》靠着我
+《Brave》勇敢
+《Counton me》靠着我
 《Days Of My Past》童年
 《Diamonds》钻石
 《DO RE ME》哆来咪
@@ -42,7 +43,7 @@ Counton me》靠着我
 《she》她
 《someone youloved》你爱的人
 《somethingjust like this》就是这样
-SummerVibe》夏日氛围
+《SummerVibe》夏日氛围
 《The Courage Song》勇气之歌
 《The show》表演
 《Trouble lsA Friend》麻烦是朋友
