@@ -34,6 +34,6 @@
 		"body": [
 				"console.log()"
 		],
-		"description": "快速创建vm实例"
+		"description": "快速创建日志"
 	}
 }
