@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mr.mapper.InfoUserMapper">
+    <resultMap id="BaseResultMap" type="com.mr.model.InfoUser">
+        <id column="channel" jdbcType="VARCHAR" property="channel"/>
+        <id column="thirdparty" jdbcType="VARCHAR" property="thirdparty"/>
+        <result column="userid" jdbcType="BIGINT" property="userid"/>
+        <result column="state" jdbcType="INTEGER" property="state"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="paymentpassword" jdbcType="VARCHAR" property="paymentpassword"/>
+        <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+        <result column="lang" jdbcType="INTEGER" property="lang"/>
+        <result column="sex" jdbcType="INTEGER" property="sex"/>
+        <result column="age" jdbcType="VARCHAR" property="age"/>
+        <result column="nationality" jdbcType="VARCHAR" property="nationality"/>
+        <result column="industry" jdbcType="VARCHAR" property="industry"/>
+        <result column="job" jdbcType="VARCHAR" property="job"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="rank" jdbcType="INTEGER" property="rank"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="registertime" jdbcType="TIMESTAMP" property="registertime"/>
+        <result column="lastlogintime" jdbcType="TIMESTAMP" property="lastlogintime"/>
+        <result column="lastloginip" jdbcType="CHAR" property="lastloginip"/>
+        <result column="agentversion" jdbcType="VARCHAR" property="agentversion"/>
+        <result column="invitationcode" jdbcType="CHAR" property="invitationcode"/>
+        <result column="hxuuid" jdbcType="VARCHAR" property="hxuuid"/>
+        <result column="vocalverify" jdbcType="BIT" property="vocalverify"/>
+        <result column="faceverify" jdbcType="BIT" property="faceverify"/>
+        <result column="creatorid" jdbcType="BIGINT" property="creatorid"/>
+    </resultMap>
+
+    <insert id="insert" keyProperty="userid" useGeneratedKeys="true">
+        insert into info_user(channel, thirdparty,
+        state, username, password,
+        paymentpassword, nickname, avatar,
+        lang, sex, age, nationality,
+        industry, job, phone,
+        email, rank, title,
+        registertime, lastlogintime, lastloginip,
+        agentversion, invitationcode, hxuuid,
+        vocalverify, faceverify, creatorid) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.channel},#{item.thirdparty},#{item.state},#{item.username},#{item.username},
+            #{item.password},#{item.paymentpassword},#{item.nickname},#{item.avatar}
+            ,#{item.lang},#{item.sex},#{item.age},#{item.nationality}
+            ,#{item.industry},#{item.job},#{item.phone},#{item.email}
+            ,#{item.rank},#{item.title},#{item.registertime},#{item.lastlogintime}
+            ,#{item.lastloginip},#{item.agentversion},#{item.invitationcode},#{item.hxuuid}
+            ,#{item.vocalverify},#{item.faceverify},#{item.creatorid})
+        </foreach>
+    </insert>
+</mapper>

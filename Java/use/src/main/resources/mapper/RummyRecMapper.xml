@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "--//mybatis.org//DTD mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="db.business.dao.PlayingDao">
+    <resultMap id="WinResultMap" type="db.business.entity.Playing">
+        <result property="userId" column="user_id"/>
+        <result property="playCount" column="play_count"/>
+        <result property="winCount" column="win_count"/>
+        <result property="winRobot" column="win_robot"/>
+    </resultMap>
+
+    <select id="queryWin" resultMap="WinResultMap">
+       SELECT user_id, play_count,win_count,win_robot FROM `info_user_playing`
+       WHERE `win_robot` > #{winRobot} AND `play_count` > #{playCount}
+    </select>
+
+    <resultMap id="WinRecMap" type="db.business.entity.RecSe">
+        <result property="id" column="id"/>
+        <result property="roomId" column="room_id"/>
+        <result property="beginTime" column="begin_time"/>
+        <result property="userId0" column="userid_0"/>
+        <result property="win0" column="control_level_0"/>
+        <result property="control0" column="win_robot"/>
+        <result property="userId1" column="userid_1"/>
+        <result property="win1" column="control_level_1"/>
+        <result property="control1" column="win_robot"/>
+        <result property="userId2" column="userid_2"/>
+        <result property="win2" column="win_point_2"/>
+        <result property="control2" column="control_level_2"/>
+        <result property="userId3" column="userid_3"/>
+        <result property="win3" column="win_point_3"/>
+        <result property="control3" column="control_level_3"/>
+        <result property="userId4" column="win_count"/>
+        <result property="win4" column="userid_4"/>
+        <result property="control4" column="control_level_4"/>
+        <result property="userId5" column="userid_5"/>
+        <result property="win5" column="win_point_5"/>
+        <result property="control5" column="control_level_5"/>
+    </resultMap>
+
+    <select id="queryInfo" resultMap="WinRecMap">
+        SELECT room_id,
+        userid_0, win_point_0,control_level_0,
+        userid_1, win_point_1,control_level_1
+        ,userid_2, win_point_2,control_level_2
+        ,userid_3, win_point_3,control_level_3
+        ,userid_4, win_point_4,control_level_4
+        ,userid_5, win_point_5,control_level_5
+        FROM `rec_settlement`
+        WHERE (`userid_0` = #{uid} and 0 > control_level_0  and win_point_0 >0)
+        OR  (`userid_1` = #{uid} and 0 > control_level_1  and win_point_1 >0)
+        OR  (`userid_2` = #{uid} and 0 >control_level_2 and win_point_2 >0)
+        OR (`userid_3` = #{uid} and 0 >control_level_3  and win_point_3 >0)
+        OR  (`userid_4` = #{uid} and 0 >control_level_4  and win_point_4 >0)
+        OR  (`userid_5` = #{uid} and 0 >control_level_5  and win_point_5 >0)
+    </select>
+
+
+    <select id="queryInfoWithEndTime" resultMap="WinRecMap">
+        SELECT room_id,
+        userid_0, win_point_0,control_level_0,
+        userid_1, win_point_1,control_level_1
+        ,userid_2, win_point_2,control_level_2
+        ,userid_3, win_point_3,control_level_3
+        ,userid_4, win_point_4,control_level_4
+        ,userid_5, win_point_5,control_level_5
+        FROM`rec_settlement`
+       WHERE `end_time` between  #{endTimeStart} and  #{endTimeEnd}
+    </select>
+
+    <select id="queryInfoWithEndTimeAndNum" resultMap="WinRecMap">
+        SELECT id,room_id,
+        userid_0, win_point_0,control_level_0,
+        userid_1, win_point_1,control_level_1
+        ,userid_2, win_point_2,control_level_2
+        ,userid_3, win_point_3,control_level_3
+        ,userid_4, win_point_4,control_level_4
+        ,userid_5, win_point_5,control_level_5
+        FROM`rec_settlement`
+       WHERE `end_time` between  #{endTimeStart} and  #{endTimeEnd}
+        ORDER BY `end_time`
+        limit #{begin},#{length}
+    </select>
+</mapper>

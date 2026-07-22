@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="servertool" basedir=".">
+
+    <!-- 项目属性 -->
+    <property name="src.dir" value="src"/>
+    <property name="build.dir" value="build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="lib.dir" value="lib"/>
+    <property name="tool.output.dir" value="../../Common/Tools/Bin/server"/>
+    <property name="desktop.output.dir" value="${user.home}/Desktop/work/tool"/>
+    <property name="message.output.dir" value="../../Common/Tools/Bin/opcode"/>
+    <property name="view.output.dir"
+              value="../../Document/DevelopmentGD&amp;ConfigurationExcel/ConfigurationExcel/xls2gd_zh"/>
+    <property name="view1.output.dir"
+              value="../../../WarShip/Document/DevelopmentGD&amp;ConfigurationExcel/ConfigurationExcel/data/China"/>
+
+    <!-- 主类配置 -->
+    <property name="GenTools.main-class" value="com.gamer.data.ExcelMain"/>
+    <property name="ViewTools.main-class" value="com.gamer.data.View"/>
+    <property name="GdGenTools.main-class" value="com.gamer.data.gdg.DataBuilder"/>
+    <property name="View1Tools.main-class" value="com.gamer.data.View1"/>
+    <property name="NetOpcode.main-class" value="com.gamer.data.message.NetOpcodeMaker"/>
+    <property name="FileTools.main-class" value="com.gamer.data.file.FileMain"/>
+    <property name="McpServer.main-class" value="com.gamer.data.mpcserver.McpServer"/>
+    <property name="McpExcelServer.main-class" value="com.gamer.data.mpcserver.McpExcelServerMain"/>
+    <property name="McpDbServer.main-class" value="com.gamer.data.mpcserver.McpDbServerMain"/>
+    <property name="McpFsServer.main-class" value="com.gamer.data.mpcserver.McpFsServerMain"/>
+    <property name="McpRedisServer.main-class" value="com.gamer.data.mpcserver.McpRedisServerMain"/>
+
+    <!-- 清理 -->
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <!-- 初始化目录 -->
+    <target name="init">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${tool.output.dir}"/>
+        <mkdir dir="${message.output.dir}"/>
+        <mkdir dir="${view.output.dir}"/>
+        <mkdir dir="${view1.output.dir}"/>
+    </target>
+
+    <!-- 编译所有 -->
+    <target name="compile" depends="init">
+        <echo message="[INFO] 开始编译所有Java源文件..."/>
+        <tstamp>
+            <format property="compile.start.time" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+
+        <!-- 清空classes目录，确保重新编译所有文件 -->
+        <delete dir="${classes.dir}"/>
+        <mkdir dir="${classes.dir}"/>
+
+        <javac srcdir="${src.dir}" destdir="${classes.dir}"
+               source="1.8" target="1.8" encoding="UTF-8"
+               debug="true" includeantruntime="false">
+            <classpath>
+                <fileset dir="${lib.dir}">
+                    <include name="**/*.jar"/>
+                </fileset>
+            </classpath>
+        </javac>
+
+        <!-- 复制资源文件 -->
+        <echo message="[INFO] 复制资源文件..."/>
+        <copy todir="${classes.dir}" overwrite="true">
+            <fileset dir="${src.dir}">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+
+        <tstamp>
+            <format property="compile.end.time" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+        <echo message="[INFO] 编译完成，开始时间: ${compile.start.time}，结束时间: ${compile.end.time}"/>
+    </target>
+
+    <!-- 仅编译message包，只依赖domjar -->
+    <target name="compile-message-only" depends="init">
+        <echo message="[INFO] 开始编译message包..."/>
+        <tstamp>
+            <format property="compile.message.start.time" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+
+        <!-- 只删除message包目录，保留其他编译结果 -->
+        <delete dir="${classes.dir}/com/gamer/data/message"/>
+        <mkdir dir="${classes.dir}/com/gamer/data/message"/>
+
+        <javac srcdir="${src.dir}" destdir="${classes.dir}"
+               source="1.8" target="1.8" encoding="UTF-8"
+               debug="true" includeantruntime="false">
+            <!-- 指定只编译message包 -->
+            <include name="com/gamer/data/message/**/*.java"/>
+            <classpath>
+                <fileset dir="${lib.dir}">
+                    <include name="dom4j-2.1.3.jar"/>
+                    <include name="xmlbeans-3.1.0.jar"/>
+                </fileset>
+            </classpath>
+        </javac>
+
+        <!-- 复制message包的资源文件 -->
+        <copy todir="${classes.dir}" overwrite="true">
+            <fileset dir="${src.dir}">
+                <include name="com/gamer/data/message/**/*.properties"/>
+                <include name="com/gamer/data/message/**/*.xml"/>
+                <include name="com/gamer/data/message/**/*.txt"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+
+        <tstamp>
+            <format property="compile.message.end.time" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+        <echo message="[INFO] message包编译完成，开始时间: ${compile.message.start.time}，结束时间: ${compile.message.end.time}"/>
+    </target>
+
+    <!-- 仅编译file包，不要任何依赖 -->
+    <target name="compile-file-only" depends="init">
+        <echo message="[INFO] 开始编译file包..."/>
+        <tstamp>
+            <format property="compile.file.start.time" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+
+        <!-- 只删除file包目录，保留其他编译结果 -->
+        <delete dir="${classes.dir}/com/gamer/data/file"/>
+        <mkdir dir="${classes.dir}/com/gamer/data/file"/>
+
+        <javac srcdir="${src.dir}" destdir="${classes.dir}"
+               source="1.8" target="1.8" encoding="UTF-8"
+               debug="true" includeantruntime="false">
+            <!-- 指定只编译file包 -->
+            <include name="com/gamer/data/file/**/*.java"/>
+        </javac>
+
+        <tstamp>
+            <format property="compile.file.end.time" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+        <echo message="[INFO] file包编译完成，开始时间: ${compile.file.start.time}，结束时间: ${compile.file.end.time}"/>
+    </target>
+
+    <macrodef name="create-jar">
+        <attribute name="jar.name"/>
+        <attribute name="main.class"/>
+        <attribute name="output.dir"/>
+        <attribute name="class.includes" default="**/*"/>
+        <attribute name="class.excludes" default=""/>
+        <element name="deps-includes"/>
+        <sequential>
+            <echo message="[INFO] 开始打包 @{jar.name}..."/>
+            <tstamp>
+                <format property="jar.@{jar.name}.start.time" pattern="yyyy-MM-dd HH:mm:ss"/>
+            </tstamp>
+
+            <mkdir dir="@{output.dir}"/>
+
+            <jar destfile="@{output.dir}/@{jar.name}.jar" duplicate="preserve">
+                <manifest>
+                    <attribute name="Main-Class" value="@{main.class}"/>
+                    <attribute name="Built-By" value="Ant"/>
+                    <attribute name="Created-By" value="Ant"/>
+                    <attribute name="Class-Path" value="."/>
+                </manifest>
+
+                <fileset dir="${classes.dir}"
+                         includes="@{class.includes}"
+                         excludes="@{class.excludes}"/>
+
+                <zipgroupfileset dir="${lib.dir}">
+                    <deps-includes/>
+                    <patternset>
+                        <exclude name="META-INF/*.SF"/>
+                        <exclude name="META-INF/*.DSA"/>
+                        <exclude name="META-INF/*.RSA"/>
+                        <exclude name="META-INF/*.MF"/>
+                    </patternset>
+                </zipgroupfileset>
+            </jar>
+
+            <tstamp>
+                <format property="jar.@{jar.name}.end.time" pattern="yyyy-MM-dd HH:mm:ss"/>
+            </tstamp>
+            <echo message="[INFO] @{jar.name} 打包完成，开始时间: ${jar.@{jar.name}.start.time}，结束时间: ${jar.@{jar.name}.end.time}"/>
+            <echo message="[INFO] @{jar.name} 输出到: @{output.dir}/@{jar.name}.jar"/>
+            <echo message=" "/>
+        </sequential>
+    </macrodef>
+
+
+    <!-- 单独打包目标 -->
+    <target name="p-GenTools" depends="compile">
+        <echo message="[INFO] =========================================="/>
+        <echo message="[INFO] 开始单独打包 GenTools..."/>
+        <tstamp>
+            <format property="package.single.GenTools.start.time" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+        <create-jar jar.name="GenTools"
+                    main.class="${GenTools.main-class}"
+                    output.dir="${tool.output.dir}">
+            <deps-includes>
+                <include name="jackson-annotations-2.11.0.jar"/>
+                <include name="jackson-core-2.11.0.jar"/>
+                <include name="jackson-databind-2.11.0.jar"/>
+                <include name="poi-4.1.2.jar"/>
+                <include name="poi-ooxml-4.1.2.jar"/>
+                <include name="poi-ooxml-schemas-4.1.2.jar"/>
+                <include name="xmlbeans-3.1.0.jar"/>
+                <include name="commons-collections4-4.4.jar"/>
+                <include name="commons-compress-1.19.jar"/>
+                <include name="commons-codec-1.3.jar"/>
+                <include name="curvesapi-1.06.jar"/>
+                <include name="SparseBitSet-1.2.jar"/>
+                <include name="commons-math3-3.6.1.jar"/>
+            </deps-includes>
+        </create-jar>
+        <tstamp>
+            <format property="package.single.GenTools.end.time" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+        <echo message="[INFO] GenTools 单独打包完成"/>
+        <echo message="[INFO] 输出到: ${tool.output.dir}"/>
+        <echo message="[INFO] 打包时间: ${package.single.GenTools.start.time} 到 ${package.single.GenTools.end.time}"/>
+        <echo message="[INFO] =========================================="/>
+    </target>
+
+    <target name="p-ViewTools" depends="compile">
+        <echo message="[INFO] =========================================="/>
+        <echo message="[INFO] 开始单独打包 ViewTools..."/>
+        <tstamp>
+            <format property="package.single.ViewTools.start.time" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+        <!-- ViewTools：仅打入 GD/Excel 对比查看所需类与 POI 依赖，排除 gen/mcp/message/map 等其余模块及无关 jar -->
+        <create-jar jar.name="ViewTools"
+                    main.class="${ViewTools.main-class}"
+                    output.dir="${view.output.dir}"
+                    class.includes="
+                    com/gamer/data/View.class,com/gamer/data/ExcelMain.class,
+                    com/gamer/data/message/Util.class,
+                    com/gamer/data/excel/AbstractViewFrame*.class,
+                    com/gamer/data/excel/BaseCheck.class,
+                    com/gamer/data/excel/DataType.class,
+                    com/gamer/data/excel/ExcelExtensions.class,
+                    com/gamer/data/excel/GdData.class,
+                    com/gamer/data/excel/GdFileReader.class,
+                    com/gamer/data/excel/GdHeader.class,
+                    com/gamer/data/excel/Log.class,
+                    com/gamer/data/excel/SyncLabel.class,
+                    com/gamer/data/excel/view/*.class,
+                    com/gamer/data/gd/*.class,
+                    com/gamer/data/map/*.class">
+            <deps-includes>
+                <include name="poi-4.1.2.jar"/>
+                <include name="poi-ooxml-4.1.2.jar"/>
+                <include name="poi-ooxml-schemas-4.1.2.jar"/>
+                <include name="xmlbeans-3.1.0.jar"/>
+                <include name="commons-collections4-4.4.jar"/>
+                <include name="commons-compress-1.19.jar"/>
+                <include name="commons-codec-1.3.jar"/>
+                <include name="curvesapi-1.06.jar"/>
+                <include name="SparseBitSet-1.2.jar"/>
+                <include name="commons-math3-3.6.1.jar"/>
+                <include name="jackson-annotations-2.11.0.jar"/>
+                <include name="jackson-core-2.11.0.jar"/>
+                <include name="jackson-databind-2.11.0.jar"/>
+            </deps-includes>
+        </create-jar>
+        <tstamp>
+            <format property="package.single.ViewTools.end.time" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+        <echo message="[INFO] ViewTools 单独打包完成"/>
+        <echo message="[INFO] 输出到: ${view.output.dir}"/>
+        <echo message="[INFO] 打包时间: ${package.single.ViewTools.start.time} 到 ${package.single.ViewTools.end.time}"/>
+        <echo message="[INFO] =========================================="/>
+    </target>
+
+    <target name="p-View1Tools" depends="compile">
+        <echo message="[INFO] =========================================="/>
+        <echo message="[INFO] 开始单独打包 View1Tools..."/>
+        <tstamp>
+            <format property="package.single.View1Tools.start.time" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+        <!-- View1Tools：与 ViewTools 相同精简范围，入口为 View1（无 ExcelMain / Util） -->
+        <create-jar jar.name="View1Tools"
+                    main.class="${View1Tools.main-class}"
+                    output.dir="${view1.output.dir}"
+                    class.includes="
+                    com/gamer/data/View1.class,
+                    com/gamer/data/excel/AbstractViewFrame*.class,
+                    com/gamer/data/excel/BaseCheck.class,
+                    com/gamer/data/excel/DataType.class,
+                    com/gamer/data/excel/ExcelExtensions.class,
+                    com/gamer/data/excel/GdData.class,
+                    com/gamer/data/excel/GdFileReader.class,
+                    com/gamer/data/excel/GdHeader.class,
+                    com/gamer/data/excel/Log.class,
+                    com/gamer/data/excel/SyncLabel.class,
+                    com/gamer/data/excel/view/*.class,
+                    com/gamer/data/gd/*.class,
+                    com/gamer/data/map/*.class">
+            <deps-includes>
+                <include name="poi-4.1.2.jar"/>
+                <include name="poi-ooxml-4.1.2.jar"/>
+                <include name="poi-ooxml-schemas-4.1.2.jar"/>
+                <include name="xmlbeans-3.1.0.jar"/>
+                <include name="commons-collections4-4.4.jar"/>
+                <include name="commons-compress-1.19.jar"/>
+                <include name="commons-codec-1.3.jar"/>
+                <include name="curvesapi-1.06.jar"/>
+                <include name="SparseBitSet-1.2.jar"/>
+                <include name="commons-math3-3.6.1.jar"/>
+            </deps-includes>
+        </create-jar>
+        <tstamp>
+            <format property="package.single.View1Tools.end.time" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+        <echo message="[INFO] View1Tools 单独打包完成"/>
+        <echo message="[INFO] 输出到: ${view1.output.dir}"/>
+        <echo message="[INFO] 打包时间: ${package.single.View1Tools.start.time} 到 ${package.single.View1Tools.end.time}"/>
+        <echo message="[INFO] =========================================="/>
+    </target>
+
+    <target name="p-NetOpcode" depends="compile-message-only">
+        <echo message="[INFO] =========================================="/>
+        <echo message="[INFO] 开始单独打包 NetOpcode..."/>
+        <tstamp>
+            <format property="package.single.NetOpcode.start.time" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+        <create-jar jar.name="NetOpcode"
+                    main.class="${NetOpcode.main-class}"
+                    output.dir="${message.output.dir}"
+                    class.includes="com/gamer/data/message/**/*">
+            <deps-includes>
+                <include name="dom4j-2.1.3.jar"/>
+                <include name="xmlbeans-3.1.0.jar"/>
+            </deps-includes>
+        </create-jar>
+        <tstamp>
+            <format property="package.single.NetOpcode.end.time" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+        <echo message="[INFO] NetOpcode 单独打包完成"/>
+        <echo message="[INFO] 输出到: ${message.output.dir}"/>
+        <echo message="[INFO] 打包时间: ${package.single.NetOpcode.start.time} 到 ${package.single.NetOpcode.end.time}"/>
+        <echo message="[INFO] =========================================="/>
+    </target>
+
+    <!-- 单独打包FileTools - 专门的无依赖版本 -->
+    <target name="p-FileTools" depends="compile-file-only">
+        <echo message="[INFO] =========================================="/>
+        <echo message="[INFO] 开始单独打包 FileTools..."/>
+        <tstamp>
+            <format property="package.single.FileTools.start.time" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+
+        <!-- 创建一个专门的、无依赖的JAR -->
+        <jar destfile="${desktop.output.dir}/FileTools.jar">
+            <manifest>
+                <attribute name="Main-Class" value="${FileTools.main-class}"/>
+                <attribute name="Built-By" value="Ant"/>
+                <attribute name="Created-By" value="Ant"/>
+            </manifest>
+
+            <!-- 仅 file 包下的类文件，配置文件与 build.xml 同目录，打包时单独复制 -->
+            <fileset dir="${classes.dir}" includes="com/gamer/data/file/**/*.class"/>
+        </jar>
+
+        <!-- 将与 build.xml 同目录的 initial-paths.txt 复制到 jar 同目录 -->
+        <copy file="initial-paths.txt"
+              todir="${desktop.output.dir}"
+              overwrite="true"
+              failonerror="false"/>
+
+        <tstamp>
+            <format property="package.single.FileTools.end.time" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+        <echo message="[INFO] FileTools 单独打包完成"/>
+        <echo message="[INFO] 输出到: ${desktop.output.dir}（含 FileTools.jar 与 initial-paths.txt）"/>
+        <echo message="[INFO] 打包时间: ${package.single.FileTools.start.time} 到 ${package.single.FileTools.end.time}"/>
+        <echo message="[INFO] =========================================="/>
+    </target>
+
+    <!-- 拆分后的 4 个 McpServer 服务：Excel / DB / FS /REDIS-->
+    <target name="p-McpExcelServer" depends="compile">
+        <echo message="[INFO] =========================================="/>
+        <echo message="[INFO] 开始单独打包 McpExcelServer..."/>
+        <tstamp>
+            <format property="package.single.McpExcelServer.start.time" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+        <create-jar jar.name="McpExcelServer"
+                    main.class="${McpExcelServer.main-class}"
+                    output.dir="${tool.output.dir}"
+                    class.includes="
+                    com/gamer/data/mpcserver/**/*,
+                    com/gamer/data/excel/**/*,
+                    com/gamer/data/gen/model/**/*"
+                    class.excludes="
+                    com/gamer/data/mpcserver/commands/redis/*,
+                    com/gamer/data/mpcserver/commands/db/*,
+                    com/gamer/data/mpcserver/commands/fs/*">
+            <deps-includes>
+                <include name="jackson-annotations-2.11.0.jar"/>
+                <include name="jackson-core-2.11.0.jar"/>
+                <include name="jackson-databind-2.11.0.jar"/>
+                <include name="poi-4.1.2.jar"/>
+                <include name="poi-ooxml-4.1.2.jar"/>
+                <include name="poi-ooxml-schemas-4.1.2.jar"/>
+                <include name="xmlbeans-3.1.0.jar"/>
+                <include name="commons-collections4-4.4.jar"/>
+                <include name="commons-compress-1.19.jar"/>
+                <include name="commons-codec-1.3.jar"/>
+                <include name="curvesapi-1.06.jar"/>
+                <include name="SparseBitSet-1.2.jar"/>
+            </deps-includes>
+        </create-jar>
+        <tstamp>
+            <format property="package.single.McpExcelServer.end.time" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+        <echo message="[INFO] McpExcelServer 单独打包完成"/>
+        <echo message="[INFO] 输出到: ${tool.output.dir}"/>
+        <echo message="[INFO] 打包时间: ${package.single.McpExcelServer.start.time} 到 ${package.single.McpExcelServer.end.time}"/>
+        <echo message="[INFO] =========================================="/>
+    </target>
+
+    <target name="p-McpDbServer" depends="compile">
+        <echo message="[INFO] =========================================="/>
+        <echo message="[INFO] 开始单独打包 McpDbServer..."/>
+        <tstamp>
+            <format property="package.single.McpDbServer.start.time" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+        <create-jar jar.name="McpDbServer"
+                    main.class="${McpDbServer.main-class}"
+                    output.dir="${tool.output.dir}"
+                    class.includes="
+                    com/gamer/data/mpcserver/**/*"
+                    class.excludes="
+                    com/gamer/data/mpcserver/commands/redis/*,
+                    com/gamer/data/mpcserver/commands/excel/*,
+                    com/gamer/data/mpcserver/commands/fs/*">
+            <deps-includes>
+                <include name="jackson-annotations-2.11.0.jar"/>
+                <include name="jackson-core-2.11.0.jar"/>
+                <include name="jackson-databind-2.11.0.jar"/>
+                <include name="mysql-connector-java-8.0.22.jar"/>
+            </deps-includes>
+        </create-jar>
+        <tstamp>
+            <format property="package.single.McpDbServer.end.time" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+        <echo message="[INFO] McpDbServer 单独打包完成"/>
+        <echo message="[INFO] 输出到: ${tool.output.dir}"/>
+        <echo message="[INFO] 打包时间: ${package.single.McpDbServer.start.time} 到 ${package.single.McpDbServer.end.time}"/>
+        <echo message="[INFO] =========================================="/>
+    </target>
+
+    <target name="p-McpFsServer" depends="compile">
+        <echo message="[INFO] =========================================="/>
+        <echo message="[INFO] 开始单独打包 McpFsServer..."/>
+        <tstamp>
+            <format property="package.single.McpFsServer.start.time" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+        <create-jar jar.name="McpFsServer"
+                    main.class="${McpFsServer.main-class}"
+                    output.dir="${tool.output.dir}"
+                    class.includes="
+                    com/gamer/data/mpcserver/**/*"
+                    class.excludes="
+                    com/gamer/data/mpcserver/commands/redis/*,
+                    com/gamer/data/mpcserver/commands/db/*,
+                    com/gamer/data/mpcserver/commands/excel/*">
+            <deps-includes>
+                <include name="jackson-annotations-2.11.0.jar"/>
+                <include name="jackson-core-2.11.0.jar"/>
+                <include name="jackson-databind-2.11.0.jar"/>
+            </deps-includes>
+        </create-jar>
+        <tstamp>
+            <format property="package.single.McpFsServer.end.time" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+        <echo message="[INFO] McpFsServer 单独打包完成"/>
+        <echo message="[INFO] 输出到: ${tool.output.dir}"/>
+        <echo message="[INFO] 打包时间: ${package.single.McpFsServer.start.time} 到 ${package.single.McpFsServer.end.time}"/>
+        <echo message="[INFO] =========================================="/>
+    </target>
+
+    <!-- 拆分后的 Redis 服务：用于 Redis key/value 调试 -->
+    <target name="p-McpRedisServer" depends="compile">
+        <echo message="[INFO] =========================================="/>
+        <echo message="[INFO] 开始单独打包 McpRedisServer..."/>
+        <tstamp>
+            <format property="package.single.McpRedisServer.start.time" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+        <create-jar jar.name="McpRedisServer"
+                    main.class="${McpRedisServer.main-class}"
+                    output.dir="${tool.output.dir}"
+                    class.includes="com/gamer/data/mpcserver/**/*"
+                    class.excludes="com/gamer/data/mpcserver/commands/excel/*,
+                    com/gamer/data/mpcserver/commands/db/*,
+                    com/gamer/data/mpcserver/commands/fs/*">
+            <deps-includes>
+                <include name="jackson-annotations-2.11.0.jar"/>
+                <include name="jackson-core-2.11.0.jar"/>
+                <include name="jackson-databind-2.11.0.jar"/>
+            </deps-includes>
+        </create-jar>
+        <tstamp>
+            <format property="package.single.McpRedisServer.end.time" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+        <echo message="[INFO] McpRedisServer 单独打包完成"/>
+        <echo message="[INFO] 输出到: ${tool.output.dir}"/>
+        <echo message="[INFO] 打包时间: ${package.single.McpRedisServer.start.time} 到 ${package.single.McpRedisServer.end.time}"/>
+        <echo message="[INFO] =========================================="/>
+    </target>
+
+    <!-- 一键打四个拆分服务（仍会按各自依赖打包），但“打包检测”建议分别跑上面拆分目标 -->
+    <target name="p-McpServer" depends="p-McpExcelServer,p-McpDbServer,p-McpFsServer,p-McpRedisServer">
+        <echo message="[INFO] 四个拆分 McpServer 打包完成，输出目录: ${tool.output.dir}"/>
+    </target>
+
+
+    <!-- Gd生成工具打包 -->
+    <target name="p-GdGen" depends="compile">
+        <echo message="[INFO] =========================================="/>
+        <echo message="[INFO] 开始打包 GdGen 到 View 目录..."/>
+        <tstamp>
+            <format property="package.single.GdGen.start.time" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+
+        <!-- 1. 直接打包到 view.output.dir (不再使用 tool.output.dir) -->
+        <create-jar jar.name="DataBuilder"
+                    main.class="${GdGenTools.main-class}"
+                    output.dir="${view.output.dir}"
+                    class.includes="com/gamer/data/gdg/*">
+            <deps-includes>
+                <include name="poi-4.1.2.jar"/>
+                <include name="poi-ooxml-4.1.2.jar"/>
+                <include name="poi-ooxml-schemas-4.1.2.jar"/>
+                <include name="commons-collections4-4.4.jar"/>
+                <include name="commons-compress-1.19.jar"/>
+                <include name="commons-math3-3.6.1.jar"/>
+                <include name="xmlbeans-3.1.0.jar"/>
+            </deps-includes>
+        </create-jar>
+
+        <!-- 2. 从 view.output.dir 复制一份到 view1.output.dir -->
+        <echo message="[INFO] 正在同步到 view1.output.dir..."/>
+        <copy file="${view.output.dir}/DataBuilder.jar"
+              todir="${view1.output.dir}"
+              overwrite="true"/>
+
+        <tstamp>
+            <format property="package.single.GdGen.end.time" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+        <echo message="[INFO] GdGen 打包完成"/>
+        <echo message="[INFO] 路径1: ${view.output.dir}/DataBuilder.jar"/>
+        <echo message="[INFO] 路径2: ${view1.output.dir}/DataBuilder.jar"/>
+        <echo message="[INFO] 打包时间: ${package.single.GdGen.start.time} 到 ${package.single.GdGen.end.time}"/>
+        <echo message="[INFO] =========================================="/>
+    </target>
+</project>

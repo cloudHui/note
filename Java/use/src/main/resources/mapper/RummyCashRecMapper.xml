@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "--//mybatis.org//DTD mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="db.business.dao.CashDao">
+    <resultMap id="RecMap" type="db.business.entity.RecTransaction">
+        <result property="userId" column="user_id"/>
+        <result property="actionType" column="action_type"/>
+        <result property="channel" column="channel"/>
+        <result property="des" column="transaction_extend"/>
+        <result property="val" column="change_val"/>
+        <result property="date" column="insert_time"/>
+    </resultMap>
+
+    <select id="queryRecTransWithEndTimeAndNum" resultMap="RecMap">
+        SELECT user_id,action_type,
+        channel, transaction_extend,change_val,
+        insert_time
+        FROM `rec_transaction`
+       WHERE `insert_time` between  #{endTimeStart} and  #{endTimeEnd}
+       ORDER BY `insert_time`
+        limit #{begin},#{length}
+    </select>
+
+    <resultMap id="RecCashMap" type="db.business.entity.RecUserCash">
+        <result property="userId" column="user_id"/>
+        <result property="channel" column="channel"/>
+        <result property="free" column="free"/>
+        <result property="notFree" column="not_free"/>
+        <result property="date" column="update_time"/>
+    </resultMap>
+    <select id="queryRecCash" resultMap="RecCashMap">
+        SELECT user_id, channel, free,not_free,update_time
+        FROM `rec_user_cash`
+       ORDER BY `update_time`
+        limit #{begin},#{length}
+    </select>
+
+
+    <update id="updateRecUserCash" parameterType="db.business.entity.RecUserCashChange" statementType="CALLABLE">
+        {CALL update_user_cash_change(
+            #{userId, jdbcType=BIGINT, mode=IN},
+            #{channel,jdbcType=VARCHAR, mode=IN},
+            #{free, jdbcType=BIGINT, mode=IN},
+            #{notFree, jdbcType=BIGINT, mode=IN},
+            #{cause, jdbcType=INTEGER, mode=IN},
+            #{des, jdbcType=VARCHAR, mode=IN},
+            #{date, jdbcType=TIMESTAMP, mode=IN}
+        )}
+    </update>
+
+    <resultMap id="KycMap" type="db.business.entity.KycEntity">
+        <result property="userId" column="user_id"/>
+        <result property="cardNum" column="card_num"/>
+        <result property="cardName" column="card_name"/>
+        <result property="birthday" column="birthday"/>
+        <result property="placestate" column="placestate"/>
+        <result property="num" column="num"/>
+    </resultMap>
+
+    <select id="queryCardNum" resultMap="KycMap">
+        select card_num, count(card_num)  num
+        from info_aadhaar
+        GROUP BY card_num
+        having num > 2
+        ORDER BY num desc;
+    </select>
+
+
+    <resultMap id="device" type="db.business.entity.DeviceIpEntity">
+        <result property="last_login_ip" column="last_login_ip"/>
+        <result property="device_info" column="device_info"/>
+        <result property="id" column="user_id"/>
+    </resultMap>
+
+    <select id="queryDeviceAndIp" resultMap="device">
+        select last_login_ip,`device_info` , user_id from info_user
+        where user_id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+
+    <select id="queryKyc" resultMap="KycMap">
+        select user_id,`status`,card_num, count(card_num)  num from info_aadhaar GROUP BY card_num ORDER BY num desc
+        having num > 1;
+    </select>
+
+    <resultMap id="cardMap" type="db.business.entity.IdentityCarsEntity">
+        <result property="userId" column="user_id"/>
+        <result property="front" column="frontside"/>
+        <result property="back" column="backside"/>
+    </resultMap>
+    <select id="queryIdentityCars" resultMap="cardMap">
+        SELECT user_id, frontside, backside
+        FROM `info_aadhaar`
+        ORDER BY id
+        limit #{begin},#{length}
+    </select>
+
+
+    <select id="getRegistersUserId" resultType="java.lang.Long">
+       select user_id
+       from info_user
+       where register_time
+       between '2021-02-13 00:00:00' and '2021-02-14 00:00:00';
+    </select>
+
+    <resultMap id="LastCashLog" type="db.business.entity.RecUserCashLog">
+        <result property="userId" column="user_id"/>
+        <result property="charge" column="charge"/>
+        <result property="present" column="present"/>
+        <result property="withdraw" column="withdraw"/>
+    </resultMap>
+
+    <select id="getLastCashLog" resultMap="LastCashLog">
+        select user_id ,charge, present, withdraw
+        from rec_user_cash_change
+        where
+        '2021-03-14 00:00:00' > update_time
+        and
+        user_id = #{userId}
+        order by update_time desc limit 0,1
+    </select>
+    <select id="queryByCardNumbs" resultType="db.business.entity.KycEntity">
+        select user_id, card_num, card_name, birthday, placestate
+        from info_aadhaar
+        where card_num in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+</mapper>

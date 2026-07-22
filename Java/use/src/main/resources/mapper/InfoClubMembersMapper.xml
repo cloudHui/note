@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mr.mapper.InfoClubMembersMapper">
+    <resultMap id="BaseResultMap" type="com.mr.model.InfoClubMembers">
+        <id column="clubid" jdbcType="BIGINT" property="clubid"/>
+        <id column="userid" jdbcType="BIGINT" property="userid"/>
+        <result column="relationshiptype" jdbcType="INTEGER" property="relationshiptype"/>
+        <result column="role" jdbcType="INTEGER" property="role"/>
+        <result column="privilege" jdbcType="INTEGER" property="privilege"/>
+        <result column="jointime" jdbcType="TIMESTAMP" property="jointime"/>
+    </resultMap>
+
+    <insert id="insert">
+        insert into info_clubmembers(clubid, userid,relationshiptype, role,privilege,jointime) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.clubid},#{item.userid},#{item.relationshiptype},#{item.role},#{item.privilege},#{item.jointime})
+        </foreach>
+    </insert>
+</mapper>
