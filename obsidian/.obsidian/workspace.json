@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "work/日志/2026/07/2026-07-21.md",
+                "file": "private/账户.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2026-07-21"
+              "title": "账户"
             }
           }
         ]
@@ -185,8 +185,11 @@
   },
   "active": "954c9d99e912f97f",
   "lastOpenFiles": [
-    "work/服务操作/域名变更.md",
+    "work/服务操作/maven 命令.md",
     "work/服务操作/Git 命令.md",
+    "work/日志/2026/07/2026-07-22.md",
+    "work/日志/2026/07/2026-07-21.md",
+    "work/服务操作/域名变更.md",
     "work/开发工具/dev-tools_index.md",
     "work/开发工具/markdown-notes.md",
     "work/开发工具/tools.md",
@@ -197,7 +200,6 @@
     "work/服务操作/服务器vp.md",
     "work/服务操作/数据库.md",
     "work/服务操作/命令日志来源.md",
-    "work/日志/2026/07/2026-07-21.md",
     "work/日志/2026/07/2026-07-10.md",
     "work/日志/2026/07/2026-07-09.md",
     "work/日志/2026/07/2026-07-15.md",
@@ -210,9 +212,7 @@
     "work/index.md",
     "work/服务框架",
     "work/日志/2026/07/07_index.md",
-    "daily/2026/07/07_index.md",
     "daily/2026/07",
-    "daily.md",
     "未命名 1.base",
     "未命名 2.canvas",
     "未命名 1.canvas",
