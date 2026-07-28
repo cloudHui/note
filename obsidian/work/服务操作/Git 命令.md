@@ -97,3 +97,8 @@ git pull origin main
 git status
 git diff
 ```
+
+## 11.看git 仓库大小 
+``` bash
+`https://api.github.com/repos/cloudHui/Server`
+```
