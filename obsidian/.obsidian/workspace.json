@@ -41,7 +41,9 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical",
-                "autoReveal": false
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-folder-closed",
               "title": "文件列表"
@@ -53,7 +55,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "git",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -185,19 +187,22 @@
   },
   "active": "954c9d99e912f97f",
   "lastOpenFiles": [
-    "work/服务操作/服务问题.md",
+    "work/日志/2026/07/2026-07-31.md",
+    "work/日志/2026/07/2026-07-24.md",
     "work/服务操作/linux 命令.md",
     "work/服务操作/工作服务器.md",
+    "work/服务操作/服务问题.md",
+    "work/服务操作/Git 命令.md",
+    "work/服务操作/工作gm.md",
+    "private/account_index.md",
+    "private/账户.md",
+    "work/服务操作/服务器vp.md",
+    "work/服务操作/命令日志来源.md",
     "work/编程规则/warnings.md",
     "work/开发工具/markdown-notes.md",
     "work/开发工具/dev-tools_index.md",
     "work/服务框架/web启动配置流程.md",
     "work/服务框架/LoginSrv服务配置.md",
-    "work/服务操作/服务器vp.md",
-    "work/服务操作/Git 命令.md",
-    "work/服务操作/命令日志来源.md",
-    "work/日志/2026/07/2026-07-24.md",
-    "private/账户.md",
     "work/服务操作/maven 命令.md",
     "work/日志/2026/07/2026-07-22.md",
     "work/日志/2026/07/2026-07-21.md",
@@ -208,9 +213,6 @@
     "work/日志/2026/07/2026-07-10.md",
     "work/日志/2026/07/2026-07-09.md",
     "work/日志/2026/07/2026-07-15.md",
-    "work/ai工具/谷歌云网站待做.md",
-    "work/ai工具/codex_cursor_cli工具.md",
-    "work/ai工具/ai-tools_index.md",
     "work/服务框架",
     "daily/2026/07",
     "未命名 1.base",
